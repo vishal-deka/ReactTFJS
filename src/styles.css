@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -13,7 +15,8 @@
 }
 .heading {
   top: 0;
-  height: 50px;
+
+  font-family: "Pacifico", cursive;
   margin-bottom: 10px;
 }
 .container {
