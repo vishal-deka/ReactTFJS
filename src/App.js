@@ -1,16 +1,22 @@
 import "./styles.css";
 import * as tflite from "@tensorflow/tfjs-tflite";
 import * as tf from "@tensorflow/tfjs";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { useState } from "react";
 
 export default function App() {
   const [img, setImg] = useState(null);
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState(
+    "https://cdn.shopify.com/s/files/1/0272/4770/6214/articles/when-do-puppies-start-walking_1200x855.jpg?v=1593020034"
+  );
   const [dims, setDims] = useState({
     width: null,
     height: null
   });
+  const [working, setWorking] = useState(false);
 
   let tfliteModel = null;
 
@@ -23,7 +29,9 @@ export default function App() {
   }
 
   async function predict() {
+    setWorking(true);
     await begin();
+
     //loading imageData
     //TODO: add image uplaod option
     console.log("Begin prediction");
@@ -32,7 +40,9 @@ export default function App() {
 
     image.src = url;
     image.crossOrigin = "Anonymous";
+
     image.onload = function () {
+      console.log("here");
       setDims({
         width: image.width,
         height: image.height
@@ -58,11 +68,12 @@ export default function App() {
         rgba.push(255);
       }
       // Draw on canvas.
+      setWorking(false);
       const imageData = new ImageData(Uint8ClampedArray.from(rgba), 224, 224);
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
       ctx.putImageData(imageData, 0, 0);
-      canvas.classList.remove("hide");
+      canvas.classList.remove("canvas");
     };
   }
   const onImageChange = (event) => {
@@ -75,20 +86,30 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Tensorflow</h1>
-      <div>
-        <button onClick={() => begin()}>Start</button>
+      <div className="heading">
+        <h1>Cartoongan</h1>
       </div>
-      <input onChange={(e) => setUrl(e.target.value)} />
-      <div className="display">
-        {url && <img className="image" src={url} alt="pup" />}
-      </div>
+      <TextField
+        style={{ width: "50%" }}
+        id="outlined-basic"
+        label="Enter Image URL"
+        variant="outlined"
+        onChange={(e) => setUrl(e.target.value)}
+      />
 
-      <div>
-        <button onClick={predict}>Begin </button>
+      <div className="container">
+        <div className="inputimg">
+          {url && <img className="image" src={url} alt="pup" />}
+        </div>
+        <div className="middle">{working && <CircularProgress />}</div>
+        <div className="result">
+          <canvas className="canvas" width="250px" height="250px" />
+        </div>
       </div>
-      <div className="result">
-        <canvas width={`${dims.width}px`} height={`${dims.height}px`} />
+      <div>
+        <Button onClick={predict} variant="outlined">
+          Convert
+        </Button>
       </div>
     </div>
   );

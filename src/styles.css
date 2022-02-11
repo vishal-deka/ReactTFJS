@@ -3,12 +3,42 @@
   text-align: center;
 }
 
-.display {
-  width: 224px;
-  height: 224px;
-  justify-content: center;
+.image {
+  width: 100%;
 }
 
 .image {
-  width: 100%;
+  width: 224px;
+  height: 224px;
+}
+.heading {
+  top: 0;
+  height: 50px;
+  margin-bottom: 10px;
+}
+.container {
+  display: flex;
+  justify-content: space-around;
+  height: 40vh;
+  padding: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.inputimg {
+  flex: 9;
+
+  padding: 20px;
+}
+.result {
+  flex: 9;
+  padding: 20px;
+}
+.middle {
+  flex: 1;
+  align-items: center;
+  margin-top: 120px;
+}
+.canvas {
+  margin-top: 10px;
 }
